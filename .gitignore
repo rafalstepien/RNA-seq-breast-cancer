@@ -1,0 +1,11 @@
+*.fastq.gz
+*.txt
+Publikacje/
+*.zip
+*.index
+*.idx
+Kallisto/
+.Rhistory
+*.log
+*.tsv
+*.json
