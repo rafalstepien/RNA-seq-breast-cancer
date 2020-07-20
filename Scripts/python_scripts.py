@@ -6,7 +6,6 @@ import os
 
 def concatenate_files(*file_paths):
     """
-
     :param file_paths: Paths to files to concatenate.
     :return: pandas.DataFrame of estimated counts per sample.
     """
@@ -37,7 +36,6 @@ if __name__ == "__main__":
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358487/abundance.tsv",
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358488/abundance.tsv",
     )
-    cancer_samples.to_csv(f"{homepath}/cancer_samples.csv")
 
     normal_samples = concatenate_files(
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/New/ERR358485/abundance.tsv",
@@ -45,4 +43,3 @@ if __name__ == "__main__":
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358485/abundance.tsv",
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358486/abundance.tsv",
     )
-    normal_samples.to_csv(f"{homepath}/normal_samples.csv")
