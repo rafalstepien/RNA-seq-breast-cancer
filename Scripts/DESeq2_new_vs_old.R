@@ -2,10 +2,10 @@
 
 homepath <- Sys.getenv("HOME")
 
-normal_ERR3538485 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/New/ERR3538485/abundance.tsv", sep=""), sep="\t", header = T)
-normal_ERR3538486 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/New/ERR3538486/abundance.tsv", sep=""), sep="\t", header = T)
-cancer_ERR3538487 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/New/ERR3538487/abundance.tsv", sep=""), sep="\t", header = T)
-cancer_ERR3538488 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/New/ERR3538488/abundance.tsv", sep=""), sep="\t", header = T)
+normal_ERR3538485 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/New/ERR3538485/abundance.tsv", sep=""), sep="\t", header = T)
+normal_ERR3538486 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/New/ERR3538486/abundance.tsv", sep=""), sep="\t", header = T)
+cancer_ERR3538487 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/New/ERR3538487/abundance.tsv", sep=""), sep="\t", header = T)
+cancer_ERR3538488 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/New/ERR3538488/abundance.tsv", sep=""), sep="\t", header = T)
 
 counts_dataframe <- data.frame(normal_ERR3538485[, "target_id"],
                                round(normal_ERR3538485[, 4]),
@@ -25,14 +25,14 @@ colnames(counts_dataframe) <- c("target_id",
                                 "test",
                                 "test")
 
-write.table(counts_dataframe, paste(homepath, "/RNA-seq/Licencjat/Abundances/New/cancer_normal_counts.txt", sep=""),
+write.table(counts_dataframe, paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/New/cancer_normal_counts.txt", sep=""),
             sep="\t",
             quote = FALSE,
             row.names = FALSE)
 
 library(DESeq2)
 library(gplots)
-counts <- read.delim(paste(homepath, "/RNA-seq/Licencjat/Abundances/New/cancer_normal_counts.txt", sep=""),
+counts <- read.delim(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/New/cancer_normal_counts.txt", sep=""),
                      sep = "\t",
                      header = T,
                      row.names=1)
@@ -51,7 +51,7 @@ de_results <- cbind(new_columns, de_results)
 de_results <- de_results[ de_results$padj < 0.05 & complete.cases(de_results$padj), ]
 de_results <- de_results[order(de_results$padj),]
 
-write.table(de_results, file=paste(homepath, '/RNA-seq/Licencjat/Results/New/de_results.tsv', sep=""), sep="\t", quote=F, row.names=F)
+write.table(de_results, file=paste(homepath, '/RNA-seq/RNA-seq-breast-cancer/Results/New/de_results.tsv', sep=""), sep="\t", quote=F, row.names=F)
 dataset = lfcShrink(dataset, coef=2, type="apeglm") 
 
 plotMA(dataset, ylim=c(-15, 15))
@@ -66,10 +66,10 @@ plot(main = "case vs control", de_genes$log2FoldChange,-
 
 # --------------------OLDER ANNOTATION--------------------
 
-normal_ERR3538485 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/Old/ERR3538485/abundance.tsv", sep=""), sep="\t", header = T)
-normal_ERR3538486 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/Old/ERR3538486/abundance.tsv", sep=""), sep="\t", header = T)
-cancer_ERR3538487 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/Old/ERR3538487/abundance.tsv", sep=""), sep="\t", header = T)
-cancer_ERR3538488 <- read.table(paste(homepath, "/RNA-seq/Licencjat/Abundances/Old/ERR3538488/abundance.tsv", sep=""), sep="\t", header = T)
+normal_ERR3538485 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/Old/ERR3538485/abundance.tsv", sep=""), sep="\t", header = T)
+normal_ERR3538486 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/Old/ERR3538486/abundance.tsv", sep=""), sep="\t", header = T)
+cancer_ERR3538487 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/Old/ERR3538487/abundance.tsv", sep=""), sep="\t", header = T)
+cancer_ERR3538488 <- read.table(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/Old/ERR3538488/abundance.tsv", sep=""), sep="\t", header = T)
 
 counts_dataframe <- data.frame(normal_ERR3538485[, "target_id"],
                                round(normal_ERR3538485[, 4]),
@@ -89,14 +89,14 @@ colnames(counts_dataframe) <- c("target_id",
                                 "test",
                                 "test")
 
-write.table(counts_dataframe, paste(homepath, "/RNA-seq/Licencjat/Abundances/Old/cancer_normal_counts.txt", sep=""),
+write.table(counts_dataframe, paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/Old/cancer_normal_counts.txt", sep=""),
             sep="\t",
             quote = FALSE,
             row.names = FALSE)
 
 homepath <- Sys.getenv("HOME")
 
-counts <- read.delim(paste(homepath, "/RNA-seq/Licencjat/Abundances/Old/cancer_normal_counts.txt", sep=""),
+counts <- read.delim(paste(homepath, "/RNA-seq/RNA-seq-breast-cancer/Abundances/Old/cancer_normal_counts.txt", sep=""),
                      sep = "\t",
                      header = T,
                      row.names=1)
@@ -116,7 +116,7 @@ de_results <- cbind(new_columns, de_results)
 de_results <- de_results[ de_results$padj < 0.05 & complete.cases(de_results$padj), ]
 de_results <- de_results[order(de_results$padj),]
 
-write.table(de_results, file=paste(homepath, '/RNA-seq/Licencjat/Results/Old/de_results.tsv', sep=""), sep="\t", quote=F, row.names=F)
+write.table(de_results, file=paste(homepath, '/RNA-seq/RNA-seq-breast-cancer/Results/Old/de_results.tsv', sep=""), sep="\t", quote=F, row.names=F)
 dataset = lfcShrink(dataset, coef=2, type="apeglm") 
 
 plotMA(dataset, ylim=c(-15, 15))
