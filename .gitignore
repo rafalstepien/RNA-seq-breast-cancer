@@ -9,3 +9,5 @@ Kallisto/
 *.log
 *.tsv
 *.json
+*.csv
+
