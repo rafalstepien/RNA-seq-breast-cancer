@@ -13,19 +13,21 @@ def concatenate_files(*file_paths):
     :param file_paths: Paths to files to concatenate.
     :return: pandas.DataFrame of estimated counts per sample.
     """
-    for file_number, file_path in enumerate(file_paths, 1):
+    for _, file_path in enumerate(file_paths, 1):
+
+        # Get name of a file from path
         filename = os.path.basename(os.path.dirname(file_path))
+
+        # Get name of a directory above (Old/New)
         new_or_old = os.path.basename(os.path.dirname(os.path.dirname(file_path))).lower()
 
-        if file_number == 1:
-            abundance_file = pd.read_csv(file_path, sep="\t")[["target_id", "est_counts"]]
-            abundance_file.columns = ["target_id", f"est_counts_{filename}_{new_or_old}"]
-        else:
-            abundance_file = pd.read_csv(file_path, sep="\t")["est_counts"]
-            abundance_file = abundance_file.rename(f"est_counts_{filename}_{new_or_old}")
-        
+        # Read file, rename columns and drop transcript version
+        abundance_file = pd.read_csv(file_path, sep="\t")[["target_id", "est_counts"]]
+        abundance_file.columns = ["target_id", f"est_counts_{filename}_{new_or_old}"]
+        abundance_file.target_id = pd.Series([row.split('.')[0] for _, row in abundance_file.target_id.items()])
+
         try:
-            counts = pd.concat([counts, abundance_file], axis=1)
+            counts = counts.merge(abundance_file, on='target_id')
         except UnboundLocalError:
             counts = abundance_file
 
@@ -41,7 +43,7 @@ if __name__ == "__main__":
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358487/abundance.tsv",
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358488/abundance.tsv",
     )
-    cancer_samples.to_csv(f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Files/cancer_kallisto_counts.csv", index=False)
+    cancer_samples.to_csv(f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Outputs/concatenate_files_output/cancer_kallisto_counts.csv", index=False)
 
     normal_samples = concatenate_files(
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/New/ERR358485/abundance.tsv",
@@ -49,5 +51,5 @@ if __name__ == "__main__":
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358485/abundance.tsv",
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358486/abundance.tsv",
     )
-    normal_samples.to_csv(f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Files/normal_kallisto_counts.csv", index=False)
+    normal_samples.to_csv(f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Outputs/concatenate_files_output/normal_kallisto_counts.csv", index=False)
 
