@@ -1,12 +1,12 @@
 #!/bin/bash
-
 import os
 import pandas as pd
 import numpy as np
 
-
-homepath = os.path.expanduser("~")
-
+def get_difference(dataframe):
+    dataframe['diff_new'] = abs(dataframe[:, 1] - dataframe[:, 2])
+    dataframe['diff_old'] = abs(dataframe[:, 3] - dataframe[:, 4])
+    return dataframe
 
 def concatenate_files(*file_paths):
     """
@@ -33,10 +33,12 @@ def concatenate_files(*file_paths):
 
     # Replacing NaN with zeros and converting floats to integers for following DESeq2 analysis
     counts.iloc[:, list(range(1, len(file_paths) + 1))] = counts.iloc[:, list(range(1, len(file_paths) + 1))].fillna(0).astype(int)
+    # counts = get_difference(counts)
     return counts
 
 
 if __name__ == "__main__":
+    homepath = os.path.expanduser("~")
     cancer_samples = concatenate_files(
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/New/ERR358487/abundance.tsv",
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/New/ERR358488/abundance.tsv",
@@ -52,4 +54,4 @@ if __name__ == "__main__":
         f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Kallisto/Output/Old/ERR358486/abundance.tsv",
     )
     normal_samples.to_csv(f"{homepath}/RNA-seq/RNA-seq-breast-cancer/Outputs/concatenate_files_output/normal_kallisto_counts.csv", index=False)
-
+    
